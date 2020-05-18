@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+ 
+    <head>
+ 
+        <!-- En-tête du document  -->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+       
+        <!-- Balise meta  -->
+        <meta name="title" content="Titre de la page" />
+        <meta name="description" content="description de la page" />
+        <meta name="keywords" content="mots-clé1, mots-clé2, ..." />
+       
+        <!-- Indexer et suivre -->
+        <meta name="robots" content="index,follow" />
+       
+        <!--  Relier une feuille CSS externe  -->
+        <!-- <link rel='stylesheet' href='votre-fichier.css' type='text/css' /> -->
+       
+        <!-- Incorporez du CSS dans la page  -->
+        <style type="text/css" media="screen">
+          p { color:red; }
+        </style>
+       
+        <!-- Relier un fichier JavaScript  -->
+        <!--
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="./js/jquery.autocomplete.min.js"></script>
+        -->
+        <!-- Script -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <!-- jQuery UI -->
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+        <script type="text/javascript" src="{{ url_for('static', filename='js/site.js') }}"></script>
+    
+    </head>
+ 
+ 
+    <body>
+
+        <div class="row"><h2>Bienvenue sur le g&eacute;n&eacute;teur d'url raccourci</h2></div>
+        <h4><i>Nous vérifions au moment de l'enregistrement l'existence de l'url sur bit.ly!</i></h4>
+        <br/>
+        
+        <form method="POST" action="/shorten">
+            {% if error_msg %}
+                <div class="row" style="color:red;">Erreur lors de l'enregistrement!</div>
+                <br/>
+            {% endif %}
+            <div class="row">
+                <input type="text" name="url" id="url" size="124" value="" placeholder="Entrez votre url" autocomplete="false" />
+                <input type="submit" id="valid_url" name="valid_url" value="Valider" />
+            <br/>
+        </div>
+        <br/>
+        <a href="#" onclick="confirm_reinit('/reinit');">Réinitialiser la BDD</a>
+        <br/><br/>
+        <div class="row">Liste des urls</div>
+        <table class="table" border="1">
+            <thead>
+                <th>ID</th>
+                <th>URL source</th>
+                <th>URL raccourci</th>
+                <th></th>
+            </thead>
+            {% if urls %}
+                {% for u in urls  %}
+                    <tr>
+                        <td>{{ u.id }}</td>
+                        <td>{{ u.url_source }}</td>
+                        <td>{{ u.url_target }}</td>
+                        <td><a href="#" onclick="confirm_delete('/delete/{{ u.id }}')">Supprimer</a></td>
+                    </tr>
+                {% endfor %}
+            {% else  %}
+                <tr><td colspan="4">Aucune url</td></tr>
+            {% endif %}
+        </table>
+    </body>
+</html> 
